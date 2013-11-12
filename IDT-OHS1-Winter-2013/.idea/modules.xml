@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/IDT-OHS1-Winter-2013.iml" filepath="$PROJECT_DIR$/IDT-OHS1-Winter-2013.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TestJava/TestJava.iml" filepath="$PROJECT_DIR$/TestJava/TestJava.iml" />
+    </modules>
+  </component>
+</project>
+
