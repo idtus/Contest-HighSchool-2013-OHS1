@@ -42,10 +42,6 @@ import java.text.DateFormat;
  * @author Kostyantyn Proskuryakov
  * @version 0.1, 7 Nov 2013
  */
-/**
- * @author KProskuryakov
- * 
- */
 public class Dummy {
 
 	/**
