@@ -1,5 +1,6 @@
 package org.ohs1.winter2013;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,21 +12,21 @@ import java.util.List;
  * store information for BuiltInTester
  *	
  * @author Kostyantyn Proskuryakov, Ian Johnson
- * @version 0.1, 30 Dec 2013
+ * @version 0.2, 31 Dec 2013
  */
 class Expectation {
 	/**
 	 * The name of the method the expectation is associated with
 	 */
-	private String methodName;
+	private final String methodName;
 	/**
 	 * The log message the expectation is expecting
 	 */
-	private String expectedLog;
+	private final String expectedLog;
 	/**
 	 * A list of all the parameter values the expectation was predicated on
 	 */
-	private List<?> parameters;
+	private final List<?> parameters;
 	
 	
 	/**
@@ -36,7 +37,7 @@ class Expectation {
 	public Expectation(String methodName, String expectedLog, List<?> parameters) {
 		this.methodName = methodName;
 		this.expectedLog = expectedLog;
-		this.parameters = parameters;
+		this.parameters = new ArrayList<>(parameters);
 	}
 	
 	/**

@@ -40,7 +40,7 @@ import java.util.Arrays;
  * until the very end.
  * 
  * @author Kostyantyn Proskuryakov, Ian Johnson
- * @version 0.2, 30 Dec 2013
+ * @version 0.3, 31 Dec 2013
  */
 public class Dummy {
 
@@ -65,10 +65,24 @@ public class Dummy {
 		//Some tests:
 		//Shouldn't log anything
 		testMethod(2, "fff", new int[1]);
-		//Should log the first two tests
+		//Should log the first two tests, but they both fail
 		testMethod(1, "Hello world", new int[]{1, 2, 3});
+		
+		//Some time passes as other things happen in the program
+		//(to test whether times are being logged correctly)
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		//Should log the last test
 		testMethod(42, "Goodbye", new int[2]);
+		//Should log the first and last tests, but only the latter passes
+		testMethod(1, "Goodbye", new int[3]);
+		
+		//Output log
+		BuiltInTester.outputLog("Test program");
 	}
 	
 	//Method for testing stuff

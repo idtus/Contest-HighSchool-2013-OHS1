@@ -2,13 +2,15 @@ package org.ohs1.winter2013;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * The main tester class (very WIP, we may want to changed the name also)
  * 
  * @author Kostyantyn Proskuryakov, Ian Johnson
- * @version 0.1, 30 Dec 2013
+ * @version 0.2, 31 Dec 2013
  */
 public class BuiltInTester {
 	/**
@@ -19,10 +21,15 @@ public class BuiltInTester {
 	 * The expectations currently being expected
 	 */
 	private List<Expectation> expectations;
+	/**
+	 * A queue storing the log entries in the order that they were created
+	 */
+	private Queue<LogEntry> logEntries;
 	
 	
 	private BuiltInTester() {
 		expectations = new ArrayList<>();
+		logEntries = new LinkedList<>();
 	}
 	
 	//Singleton design
@@ -86,16 +93,41 @@ public class BuiltInTester {
 	
 	/**
 	 * Right now this does nothing but clear the list of expectations for testing purposes
+	 * 
 	 * @param message
 	 */
 	public static void log(String message) {
 		if (enabled) {
+			//Evaluate the correctness of all expectations and add the appropriate log entries
+			for (Expectation e : getInstance().expectations) {
+				getInstance().logEntries.add(new LogEntry(message, e));
+			}
+			
+			//Clear the list of expectations
 			getInstance().expectations.clear();
 		}
 	}
 	
 	/**
-	 * Only for testing purposes, prints out all expectations logged in the system
+	 * This will eventually be the method that outputs the HTML formatted log, but for now it
+	 * just prints out a normal, boring summary of the log entries
+	 * 
+	 * @param programName the name of the program (for log title)
+	 */
+	public static void outputLog(String programName) {
+		if (enabled) {
+			String output = "*****Testing results for " + programName + "*****\n\n";
+			
+			//Add all log entries, in order, to the output string
+			while (!getInstance().logEntries.isEmpty())
+				output += getInstance().logEntries.poll() + "\n";
+			
+			System.out.println(output);
+		}
+	}
+	
+	/**
+	 * Only for testing purposes, returns all expectations logged in the system
 	 * @return
 	 */
 	static String testingString() {
