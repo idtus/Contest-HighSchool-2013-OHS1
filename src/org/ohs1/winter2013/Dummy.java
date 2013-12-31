@@ -1,6 +1,6 @@
 package org.ohs1.winter2013;
 
-import java.text.DateFormat;
+import java.util.Arrays;
 
 /**
  * This dummy class is an example of javadoc commenting. The idea is that we'd
@@ -39,8 +39,8 @@ import java.text.DateFormat;
  * does so I know and you don't forget. Don't worry about the @whatever tags
  * until the very end.
  * 
- * @author Kostyantyn Proskuryakov
- * @version 0.1, 7 Nov 2013
+ * @author Kostyantyn Proskuryakov, Ian Johnson
+ * @version 0.2, 30 Dec 2013
  */
 public class Dummy {
 
@@ -56,56 +56,37 @@ public class Dummy {
 	 *            needs one
 	 */
 	public static void main(String[] args) {
-
-		System.out.println("lol");
-
+		//Method call before enabling
+		testMethod(4, "No", new int[4]);
+		
+		//Enable testing
+		BuiltInTester.enable();
+		
+		//Some tests:
+		//Shouldn't log anything
+		testMethod(2, "fff", new int[1]);
+		//Should log the first two tests
+		testMethod(1, "Hello world", new int[]{1, 2, 3});
+		//Should log the last test
+		testMethod(42, "Goodbye", new int[2]);
 	}
-
-	// The format of the date that is used throughout the class. Comments on
-	// fields (like this one) do not show up on javadocs but if it isn't obvious
-	// what it does, then you should write one.
-	// Also these line comments don't show up on javadocs at all.
-	private DateFormat format;
-
-	/**
-	 * Class constructor doing absolutely nothing.
-	 * 
-	 * @param df
-	 *            Format of the date that will be used for who knows what
-	 * @see DateFormat
-	 */
-	public Dummy(DateFormat df) {
-		format = df;
-	}
-
-	/**
-	 * @return The DateFormat that was passed initially to this object
-	 */
-	public DateFormat getDateFormat() {
-		return format;
-	}
-
-	/**
-	 * Adds the first number to the second number if the first number is greater
-	 * than or equal to the second number. Make sure to specify any bounds that
-	 * occur within the method.
-	 * 
-	 * @param a
-	 *            The first number. Must be greater than or equal to
-	 *            <code>b</code>
-	 * @param b
-	 *            The second number. Must be less than or equal to
-	 *            <code>a</code>
-	 * @return <code>a</code> plus <code>b</code> if <code>a</code> is greater
-	 *         than or equal to <code>b</code>
-	 * @throws ArithmeticException
-	 *             If <code>a</code> is less than <code>b</code>
-	 */
-	public int boundedMethod(int a, int b) {
-		if (a < b) {
-			throw new ArithmeticException();
-		} else {
-			return a + b;
-		}
+	
+	//Method for testing stuff
+	private static void testMethod(int a, String b, int[] c) {
+		BuiltInTester.expecting("Message 1", a, 1);
+		BuiltInTester.expecting("Message 1", a, 1, b, "Hello world", c, new int[]{1, 2, 3});
+		BuiltInTester.expecting("Message 2", b, "Goodbye");
+		
+		//Print out expectations
+		System.out.println("Parameters: a = " + a + " b = " + b + " c = " + Arrays.toString(c));
+		System.out.println(BuiltInTester.testingString());
+		
+		//Bug: Hello world spelled incorrectly
+		if (a == 1 && b.equals("Hello worllld"))
+			BuiltInTester.log("Message 1");
+		else if (b.equals("Goodbye"))
+			BuiltInTester.log("Message 2");
+		
+		BuiltInTester.log("fail");
 	}
 }
