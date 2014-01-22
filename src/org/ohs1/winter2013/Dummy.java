@@ -60,7 +60,8 @@ public class Dummy {
 		testMethod(4, "No", new int[4]);
 		
 		//Enable testing
-		BuiltInTester.enable();
+		BuiltInTester bit = BuiltInTester.INSTANCE;
+		bit.enable();
 		
 		//Some tests:
 		//Shouldn't log anything
@@ -82,25 +83,27 @@ public class Dummy {
 		testMethod(1, "Goodbye", new int[3]);
 		
 		//Output log
-		BuiltInTester.outputLog("Test program");
+		bit.outputLog("Test program");
 	}
 	
 	//Method for testing stuff
 	private static void testMethod(int a, String b, int[] c) {
-		BuiltInTester.expecting("Message 1", a, 1);
-		BuiltInTester.expecting("Message 1", a, 1, b, "Hello world", c, new int[]{1, 2, 3});
-		BuiltInTester.expecting("Message 2", b, "Goodbye");
+		BuiltInTester bit = BuiltInTester.INSTANCE;
+		
+		bit.expecting("Message 1", a, 1);
+		bit.expecting("Message 1", a, 1, b, "Hello world", c, new int[]{1, 2, 3});
+		bit.expecting("Message 2", b, "Goodbye");
 		
 		//Print out expectations
 		System.out.println("Parameters: a = " + a + " b = " + b + " c = " + Arrays.toString(c));
-		System.out.println(BuiltInTester.testingString());
+		System.out.println(bit.testingString());
 		
 		//Bug: Hello world spelled incorrectly
 		if (a == 1 && b.equals("Hello worllld"))
-			BuiltInTester.log("Message 1");
+			bit.log("Message 1");
 		else if (b.equals("Goodbye"))
-			BuiltInTester.log("Message 2");
+			bit.log("Message 2");
 		
-		BuiltInTester.log("fail");
+		bit.log("fail");
 	}
 }

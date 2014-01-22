@@ -12,45 +12,28 @@ import java.util.Queue;
  * @author Kostyantyn Proskuryakov, Ian Johnson
  * @version 0.2, 31 Dec 2013
  */
-public class BuiltInTester {
-	/**
-	 * Whether testing is enabled (global control of testing)
-	 */
-	private static boolean enabled = false;
-	/**
-	 * The expectations currently being expected
-	 */
+public enum BuiltInTester {
+	INSTANCE;
+	
+	// Whether testing is enabled (global control of testing)
+	private boolean enabled;
+
+	// The expectations currently being expected
 	private List<Expectation> expectations;
-	/**
-	 * A queue storing the log entries in the order that they were created
-	 */
+	
+	// A queue storing the log entries in the order that they were created
 	private Queue<LogEntry> logEntries;
 	
 	
 	private BuiltInTester() {
-		expectations = new ArrayList<>();
-		logEntries = new LinkedList<>();
-	}
-	
-	//Singleton design
-	private static class ClassHolder {
-		public static final BuiltInTester instance = new BuiltInTester();
-	}
-	
-	/**
-	 * This is currently private because I'm not sure when clients would actually need
-	 * the instance directly, but it can be changed
-	 * 
-	 * @return the BuiltInTester instance
-	 */
-	private static BuiltInTester getInstance() {
-		return ClassHolder.instance;
+		this.expectations = new ArrayList<>();
+		this.logEntries = new LinkedList<>();
 	}
 	
 	/**
 	 * Enables the testing system
 	 */
-	public static void enable() {
+	public void enable() {
 		enabled = true;
 	}
 	
@@ -64,7 +47,7 @@ public class BuiltInTester {
 	 * @param logMessage the message to be expecting
 	 * @param parameters the conditions, written in pairs of parameter then value, for the expectation
 	 */
-	public static void expecting(String logMessage, Object... parameters) {
+	public void expecting(String logMessage, Object... parameters) {
 		//Make sure testing is enabled
 		if (enabled) {
 			if (parameters.length % 2 != 0)
@@ -87,7 +70,7 @@ public class BuiltInTester {
 				params.add(parameters[i]);
 			
 			//Since the parameters have their desired values, log the expectation
-			getInstance().expectations.add(new Expectation(methodName, logMessage, params));
+			expectations.add(new Expectation(methodName, logMessage, params));
 		}
 	}
 	
@@ -96,15 +79,15 @@ public class BuiltInTester {
 	 * 
 	 * @param message
 	 */
-	public static void log(String message) {
+	public void log(String message) {
 		if (enabled) {
 			//Evaluate the correctness of all expectations and add the appropriate log entries
-			for (Expectation e : getInstance().expectations) {
-				getInstance().logEntries.add(new LogEntry(message, e));
+			for (Expectation e : expectations) {
+				logEntries.add(new LogEntry(message, e));
 			}
 			
 			//Clear the list of expectations
-			getInstance().expectations.clear();
+			expectations.clear();
 		}
 	}
 	
@@ -114,13 +97,13 @@ public class BuiltInTester {
 	 * 
 	 * @param programName the name of the program (for log title)
 	 */
-	public static void outputLog(String programName) {
+	public void outputLog(String programName) {
 		if (enabled) {
 			String output = "*****Testing results for " + programName + "*****\n\n";
 			
 			//Add all log entries, in order, to the output string
-			while (!getInstance().logEntries.isEmpty())
-				output += getInstance().logEntries.poll() + "\n";
+			while (!logEntries.isEmpty())
+				output += logEntries.poll() + "\n";
 			
 			System.out.println(output);
 		}
@@ -130,10 +113,10 @@ public class BuiltInTester {
 	 * Only for testing purposes, returns all expectations logged in the system
 	 * @return
 	 */
-	static String testingString() {
+	String testingString() {
 		if (enabled) {
 			String s = "";
-			for (Expectation e : getInstance().expectations)
+			for (Expectation e : expectations)
 				s += e.toString() + "\n";
 			return s;
 		} else {
@@ -148,7 +131,7 @@ public class BuiltInTester {
 	 * @param param2
 	 * @return
 	 */
-	private static boolean parameterEquals(Object param1, Object param2) {
+	private boolean parameterEquals(Object param1, Object param2) {
 		if (param1 == null || param2 == null)
 			return false;
 		
