@@ -45,10 +45,6 @@ public class BuiltInTester {
 		this.logEntries = new LinkedList<>();
 	}
 
-	public static BuiltInTester getInstance() {
-		return instance;
-	}
-
 	public static void expecting(String logMessage, Object... parameters) {
 		if (instance != null) {
 			instance.expectingInner(logMessage, parameters);
@@ -223,10 +219,10 @@ public class BuiltInTester {
 		// First part of file
 		bw.write("<html>\n<head>\n");
 		//Stylesheet
-		bw.write("<link rel=\"stylesheet\" href=\"../style.css\" type=\"text/css\" />\n");
+		bw.write("<link rel=\"stylesheet\" href=\"../scripts/style.css\" type=\"text/css\" />\n");
 		//External scripts
-		bw.write("<script type=\"text/javascript\" src=\"../jquery-latest.js\"></script>\n");
-		bw.write("<script type=\"text/javascript\" src=\"../jquery.tablesorter.min.js\"></script>\n");
+		bw.write("<script type=\"text/javascript\" src=\"../scripts/jquery-latest.js\"></script>\n");
+		bw.write("<script type=\"text/javascript\" src=\"../scripts/jquery.tablesorter.min.js\"></script>\n");
 		//Script for page load
 		bw.write("<script type=\"text/javascript\">\n");
 		bw.write("window.onload = function() {\n");
@@ -237,6 +233,7 @@ public class BuiltInTester {
     	//End of header
     	bw.write("</head>\n");
 	}
+	
 	//Date, method name, input, expected, received, pass/fail
 	private void writeBody(BufferedWriter bw) throws IOException {
 		//Body tag

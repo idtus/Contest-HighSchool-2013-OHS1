@@ -61,7 +61,6 @@ public class Dummy {
 		
 		//Enable testing
 		BuiltInTester.enable("DummyProgram", "DummyLog.html");
-		BuiltInTester bit = BuiltInTester.getInstance();
 		
 		//Some tests:
 		//Shouldn't log anything
