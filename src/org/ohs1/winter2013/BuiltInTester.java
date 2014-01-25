@@ -110,13 +110,14 @@ public enum BuiltInTester {
 	 */
 	public void outputLog() {
 		if (enabled) {
-			String output = "*****Testing results for " + programName + "*****\n\n";
+			//Normal output code
+			/*String output = "*****Testing results for " + programName + "*****\n\n";
 			
 			//Add all log entries, in order, to the output string
 			while (!logEntries.isEmpty())
 				output += logEntries.poll() + "\n";
 			
-			System.out.println(output);
+			System.out.println(output);*/
 			
 			try {
 				File f = createFile();
@@ -189,10 +190,10 @@ public enum BuiltInTester {
 		//First part of file
 		bw.write("<html>\n<head>\n");
 		//Stylesheet
-		bw.write("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" />\n");
+		bw.write("<link rel=\"stylesheet\" href=\"../style.css\" type=\"text/css\" />\n");
 		//External scripts
-		bw.write("<script type=\"text/javascript\" src=\"jquery-latest.js\"></script>\n");
-		bw.write("<script type=\"text/javascript\" src=\"jquery.tablesorter.min.js\"></script>\n");
+		bw.write("<script type=\"text/javascript\" src=\"../jquery-latest.js\"></script>\n");
+		bw.write("<script type=\"text/javascript\" src=\"../jquery.tablesorter.min.js\"></script>\n");
 		//Script for page load
 		bw.write("<script type=\"text/javascript\">\n");
 		bw.write("window.onload = function() {\n");
@@ -200,11 +201,28 @@ public enum BuiltInTester {
     	bw.write("{$(\"#all\").tablesorter();$(\"#failed\").tablesorter();}\n"); 
     	bw.write(");}\n");
     	bw.write("</script>\n");
+    	//End of header
     	bw.write("</head>\n");
 	}
 	
 	private void writeBody(BufferedWriter bw) throws IOException {
-		
+		//Body tag
+		bw.write("<body>\n");
+		//Header for all tests
+		bw.write("<h2>All tests</h2>\n");
+		//Beginning of table
+		bw.write("<table id=\"all\" class=\"tablesorter\">\n");
+		//Table header with names of columns
+		bw.write("<thead>\n<tr>\n");
+		for (String header : new String[]{"Pass/fail", "Method name", "Input", "Expected log", "Received log", "Date"})
+			bw.write("    <th>" + header + "</th>\n");
+		bw.write("</tr>\n</thead>\n");
+		//Body of table
+		bw.write("<tbody>\n");
+		while (!logEntries.isEmpty()) {
+			bw.write(logEntries.poll().toTRString(false) + "\n");
+		}
+		bw.write("</tbody>\n</table>\n");
 	}
 	
 	private void writeFooter(BufferedWriter bw) throws IOException {

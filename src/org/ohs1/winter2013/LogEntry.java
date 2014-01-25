@@ -3,6 +3,7 @@ package org.ohs1.winter2013;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Basic log entry class, we'll still need to implement methods here to export data into proper
@@ -15,7 +16,7 @@ class LogEntry {
 	/**
 	 * The date format to be used in formatting the timestamp
 	 */
-	private static final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy h:mm a");
+	private static final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.US);
 	
 	private final Expectation expectation;
 	/**
