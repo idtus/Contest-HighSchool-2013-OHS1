@@ -1,6 +1,8 @@
 package org.ohs1.winter2013;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -119,6 +121,12 @@ public enum BuiltInTester {
 			try {
 				File f = createFile();
 				System.out.println(f.getAbsolutePath());
+				//Somewhere in here we need to copy the files that I've added myself to the folder
+				BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+				writeHeader(bw);
+				writeBody(bw);
+				writeFooter(bw);
+				bw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -177,4 +185,30 @@ public enum BuiltInTester {
 		return f;
 	}
 	
+	private void writeHeader(BufferedWriter bw) throws IOException {
+		//First part of file
+		bw.write("<html>\n<head>\n");
+		//Stylesheet
+		bw.write("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" />\n");
+		//External scripts
+		bw.write("<script type=\"text/javascript\" src=\"jquery-latest.js\"></script>\n");
+		bw.write("<script type=\"text/javascript\" src=\"jquery.tablesorter.min.js\"></script>\n");
+		//Script for page load
+		bw.write("<script type=\"text/javascript\">\n");
+		bw.write("window.onload = function() {\n");
+		bw.write("$(document).ready(function()\n"); 
+    	bw.write("{$(\"#all\").tablesorter();$(\"#failed\").tablesorter();}\n"); 
+    	bw.write(");}\n");
+    	bw.write("</script>\n");
+    	bw.write("</head>\n");
+	}
+	
+	private void writeBody(BufferedWriter bw) throws IOException {
+		
+	}
+	
+	private void writeFooter(BufferedWriter bw) throws IOException {
+		//WIP
+		bw.write("</html>");
+	}
 }
