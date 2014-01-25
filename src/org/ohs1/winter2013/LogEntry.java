@@ -11,11 +11,11 @@ import java.util.Date;
  * @author Kostyantyn Proskuryakov, Ian Johnson
  * @version 0.1, 31 Dec 2013
  */
-public class LogEntry {
+class LogEntry {
 	/**
 	 * The date format to be used in formatting the timestamp
 	 */
-	private static final DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy: hh:mm:ssa: ");
+	private static final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy h:mm a");
 	
 	private final Expectation expectation;
 	/**
@@ -28,6 +28,37 @@ public class LogEntry {
 		this.actualMessage = message;
 		this.expectation = expectation;
 		this.logDate = new Date();
+	}
+	
+	/**
+	 * 
+	 * @param omitPassFail whether to omit the pass/fail column (for the failed-only table)
+	 * @return a string containing the log data in the format of an HTML table row
+	 */
+	public String toTRString(boolean omitPassFail) {
+		String trString = "<tr>";
+		
+		//Add pass/fail (if requested)
+		if (!omitPassFail) {
+			if (actualMessage.equals(expectation.getExpectedLog()))
+				trString += "<td>Pass</td>";
+			else
+				trString += "<td>Fail</td>";
+		}
+		//Add method name
+		trString += "<td>" + expectation.getMethodName() + "</td>";
+		//Add parameters
+		trString += "<td>" + expectation.getParameterString() + "</td>";
+		//Add expected log
+		trString += "<td>" + expectation.getExpectedLog() + "</td>";
+		//Add received log
+		trString += "<td>" + actualMessage + "</td>";
+		//Add date
+		trString += "<td>" + dateFormat.format(logDate) + "</td>";
+		//Add closing tag
+		trString += "</tr>";
+		
+		return trString;
 	}
 	
 	//Not really going to be used in the final product, but it looks like the example in the

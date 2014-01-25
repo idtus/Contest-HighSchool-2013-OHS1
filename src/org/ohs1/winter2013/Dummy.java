@@ -69,14 +69,6 @@ public class Dummy {
 		//Should log the first two tests, but they both fail
 		testMethod(1, "Hello world", new int[]{1, 2, 3});
 		
-		//Some time passes as other things happen in the program
-		//(to test whether times are being logged correctly)
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
 		//Should log the last test
 		testMethod(42, "Goodbye", new int[2]);
 		//Should log the first and last tests, but only the latter passes
