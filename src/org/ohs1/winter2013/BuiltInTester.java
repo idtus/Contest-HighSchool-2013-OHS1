@@ -132,28 +132,30 @@ public class BuiltInTester {
 	 * but for now it just prints out a normal, boring summary of the log
 	 * entries
 	 */
+
 	public void outputLogInner() {
-		String output = "*****Testing results for " + programName + "*****\n\n";
-
-		// Add all log entries, in order, to the output string
-		while (!logEntries.isEmpty())
-			output += logEntries.poll() + "\n";
-
-		System.out.println(output);
-
-		try {
-			File f = createFile();
-			System.out.println(f.getAbsolutePath());
-			// Somewhere in here we need to copy the files that I've added
-			// myself to the folder
-			BufferedWriter bw = new BufferedWriter(new FileWriter(f));
-			writeHeader(bw);
-			writeBody(bw);
-			writeFooter(bw);
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			//Normal output code
+			/*String output = "*****Testing results for " + programName + "*****\n\n";
+			
+			//Add all log entries, in order, to the output string
+			while (!logEntries.isEmpty())
+				output += logEntries.poll() + "\n";
+			
+			System.out.println(output);*/
+			
+			try {
+				File f = createFile();
+				System.out.println(f.getAbsolutePath());
+				//Somewhere in here we need to copy the files that I've added myself to the folder
+				BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+				writeHeader(bw);
+				writeBody(bw);
+				writeFooter(bw);
+				bw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 	}
 
 	/**
@@ -220,27 +222,74 @@ public class BuiltInTester {
 	private void writeHeader(BufferedWriter bw) throws IOException {
 		// First part of file
 		bw.write("<html>\n<head>\n");
-		// Stylesheet
-		bw.write("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" />\n");
-		// External scripts
-		bw.write("<script type=\"text/javascript\" src=\"jquery-latest.js\"></script>\n");
-		bw.write("<script type=\"text/javascript\" src=\"jquery.tablesorter.min.js\"></script>\n");
-		// Script for page load
+		//Stylesheet
+		bw.write("<link rel=\"stylesheet\" href=\"../style.css\" type=\"text/css\" />\n");
+		//External scripts
+		bw.write("<script type=\"text/javascript\" src=\"../jquery-latest.js\"></script>\n");
+		bw.write("<script type=\"text/javascript\" src=\"../jquery.tablesorter.min.js\"></script>\n");
+		//Script for page load
 		bw.write("<script type=\"text/javascript\">\n");
 		bw.write("window.onload = function() {\n");
-		bw.write("$(document).ready(function()\n");
-		bw.write("{$(\"#all\").tablesorter();$(\"#failed\").tablesorter();}\n");
-		bw.write(");}\n");
-		bw.write("</script>\n");
-		bw.write("</head>\n");
+		bw.write("$(document).ready(function()\n"); 
+    	bw.write("{$(\"#all\").tablesorter();$(\"#failed\").tablesorter();}\n"); 
+    	bw.write(");}\n");
+    	bw.write("</script>\n");
+    	//End of header
+    	bw.write("</head>\n");
 	}
-
+	//Date, method name, input, expected, received, pass/fail
 	private void writeBody(BufferedWriter bw) throws IOException {
-
+		//Body tag
+		bw.write("<body>\n");
+		//Header for file (program name)
+		bw.write("<h1>Test results for " + programName + "</h1>\n");
+		
+		//Header for all tests
+		bw.write("<h2>All tests</h2>\n");
+		//Beginning of table
+		bw.write("<table id=\"all\" class=\"tablesorter\">\n");
+		//Table header with names of columns
+		bw.write("<thead>\n<tr>\n");
+		for (String header : new String[]{"Date", "Method name", "Input", "Expected log", "Received log", "Pass/fail"})
+			bw.write("    <th>" + header + "</th>\n");
+		bw.write("</tr>\n</thead>\n");
+		
+		//Body of first (all entries) table
+		//This is a queue of all the failed log entries so they can be added to the other table as well
+		Queue<LogEntry> failedEntries = new LinkedList<>();
+		
+		bw.write("<tbody>\n");
+		while (!logEntries.isEmpty()) {
+			LogEntry entry = logEntries.poll();
+			//Add entry to failed queue if it failed
+			if (!entry.didPass())
+				failedEntries.add(entry);
+			
+			bw.write("    " + entry.toTRString(false) + "\n");
+		}
+		bw.write("</tbody>\n</table>\n");
+		
+		//Header for second table (failed tests)
+		bw.write("<h2>Failed tests</h2>\n");
+		//Beginning of table
+		bw.write("<table id=\"failed\" class=\"tablesorter\">\n");
+		//Table header with names of columns
+		bw.write("<thead>\n<tr>\n");
+		for (String header : new String[]{"Date", "Method name", "Input", "Expected log", "Received log"})
+			bw.write("    <th>" + header + "</th>\n");
+		bw.write("</tr>\n</thead>\n");
+		//Body of second (failed entries) table
+		bw.write("<tbody>\n");
+		while (!failedEntries.isEmpty())
+			bw.write("    " + failedEntries.poll().toTRString(true) + "\n");
+		bw.write("</tbody>\n</table>\n");
+		
+		//End of body
+		bw.write("</body>\n");
 	}
 
 	private void writeFooter(BufferedWriter bw) throws IOException {
-		// WIP
+		//This is sort of a pathetic method
 		bw.write("</html>");
 	}
 }

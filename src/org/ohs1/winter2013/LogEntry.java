@@ -3,6 +3,7 @@ package org.ohs1.winter2013;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Basic log entry class, we'll still need to implement methods here to export data into proper
@@ -15,7 +16,7 @@ class LogEntry {
 	/**
 	 * The date format to be used in formatting the timestamp
 	 */
-	private static final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy h:mm a");
+	private static final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.US);
 	
 	private final Expectation expectation;
 	/**
@@ -31,6 +32,15 @@ class LogEntry {
 	}
 	
 	/**
+	 * Returns whether the log entry passed or failed
+	 * 
+	 * @return whether the log entry represents a passed test
+	 */
+	public boolean didPass() {
+		return actualMessage.equals(expectation.getExpectedLog());
+	}
+	
+	/**
 	 * 
 	 * @param omitPassFail whether to omit the pass/fail column (for the failed-only table)
 	 * @return a string containing the log data in the format of an HTML table row
@@ -38,13 +48,8 @@ class LogEntry {
 	public String toTRString(boolean omitPassFail) {
 		String trString = "<tr>";
 		
-		//Add pass/fail (if requested)
-		if (!omitPassFail) {
-			if (actualMessage.equals(expectation.getExpectedLog()))
-				trString += "<td>Pass</td>";
-			else
-				trString += "<td>Fail</td>";
-		}
+		//Add date
+		trString += "<td>" + dateFormat.format(logDate) + "</td>";
 		//Add method name
 		trString += "<td>" + expectation.getMethodName() + "</td>";
 		//Add parameters
@@ -53,8 +58,13 @@ class LogEntry {
 		trString += "<td>" + expectation.getExpectedLog() + "</td>";
 		//Add received log
 		trString += "<td>" + actualMessage + "</td>";
-		//Add date
-		trString += "<td>" + dateFormat.format(logDate) + "</td>";
+		//Add pass/fail (if requested)
+		if (!omitPassFail) {
+			if (didPass())
+				trString += "<td>Pass</td>";
+			else
+				trString += "<td>Fail</td>";
+		}
 		//Add closing tag
 		trString += "</tr>";
 		
@@ -65,7 +75,7 @@ class LogEntry {
 	//problem description so it's good for testing
 	public String toString() {
 		//If the test passed, output the sort of result from the problem description
-		if (actualMessage.equals(expectation.getExpectedLog())) {
+		if (didPass()) {
 			return dateFormat.format(logDate) +
 				   expectation.getMethodName() +
 				   " with input " + expectation.getParameterString() +
