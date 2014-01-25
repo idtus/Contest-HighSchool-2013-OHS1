@@ -61,7 +61,7 @@ public class Dummy {
 		
 		//Enable testing
 		BuiltInTester bit = BuiltInTester.INSTANCE;
-		bit.enable();
+		bit.enable("DummyProgram", "DummyLog.html");
 		
 		//Some tests:
 		//Shouldn't log anything
@@ -83,7 +83,7 @@ public class Dummy {
 		testMethod(1, "Goodbye", new int[3]);
 		
 		//Output log
-		bit.outputLog("Test program");
+		bit.outputLog();
 	}
 	
 	//Method for testing stuff

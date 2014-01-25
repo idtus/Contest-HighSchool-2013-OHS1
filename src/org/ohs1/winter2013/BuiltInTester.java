@@ -1,5 +1,7 @@
 package org.ohs1.winter2013;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -17,6 +19,10 @@ public enum BuiltInTester {
 	
 	// Whether testing is enabled (global control of testing)
 	private boolean enabled;
+	
+	private String programName;
+	
+	private String outputFileName;
 
 	// The expectations currently being expected
 	private List<Expectation> expectations;
@@ -33,8 +39,10 @@ public enum BuiltInTester {
 	/**
 	 * Enables the testing system
 	 */
-	public void enable() {
+	public void enable(String programName, String outputFileName) {
 		enabled = true;
+		this.programName = programName;
+		this.outputFileName = outputFileName;
 	}
 	
 	/**
@@ -97,7 +105,7 @@ public enum BuiltInTester {
 	 * 
 	 * @param programName the name of the program (for log title)
 	 */
-	public void outputLog(String programName) {
+	public void outputLog() {
 		if (enabled) {
 			String output = "*****Testing results for " + programName + "*****\n\n";
 			
@@ -106,6 +114,9 @@ public enum BuiltInTester {
 				output += logEntries.poll() + "\n";
 			
 			System.out.println(output);
+			
+			File f = createFile();
+			
 		}
 	}
 	
@@ -145,4 +156,17 @@ public enum BuiltInTester {
 		else
 			return param1.equals(param2);
 	}
+	
+	private File createFile() {
+		String path = programName + File.separator + outputFileName;
+		File f = new File(path);
+		f.getParentFile().mkdirs();
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
+	
 }
