@@ -11,24 +11,43 @@ $(document).ready(function()
 </script>
 </head>
 <body>
+<h1>Test results for DummyProgram</h1>
 <h2>All tests</h2>
 <table id="all" class="tablesorter">
 <thead>
 <tr>
-    <th>Pass/fail</th>
+    <th>Date</th>
     <th>Method name</th>
     <th>Input</th>
     <th>Expected log</th>
     <th>Received log</th>
-    <th>Date</th>
+    <th>Pass/fail</th>
 </tr>
 </thead>
 <tbody>
-<tr><td>Fail</td><td>testMethod</td><td>(1)</td><td>Message 1</td><td>fail</td><td>Jan 25, 2014 4:26 PM</td></tr>
-<tr><td>Fail</td><td>testMethod</td><td>(1, Hello world, [1, 2, 3])</td><td>Message 1</td><td>fail</td><td>Jan 25, 2014 4:26 PM</td></tr>
-<tr><td>Pass</td><td>testMethod</td><td>(Goodbye)</td><td>Message 2</td><td>Message 2</td><td>Jan 25, 2014 4:26 PM</td></tr>
-<tr><td>Fail</td><td>testMethod</td><td>(1)</td><td>Message 1</td><td>Message 2</td><td>Jan 25, 2014 4:26 PM</td></tr>
-<tr><td>Pass</td><td>testMethod</td><td>(Goodbye)</td><td>Message 2</td><td>Message 2</td><td>Jan 25, 2014 4:26 PM</td></tr>
+    <tr><td>Jan 25, 2014 4:42 PM</td><td>testMethod</td><td>(1)</td><td>Message 1</td><td>fail</td><td>Fail</td></tr>
+    <tr><td>Jan 25, 2014 4:42 PM</td><td>testMethod</td><td>(1, Hello world, [1, 2, 3])</td><td>Message 1</td><td>fail</td><td>Fail</td></tr>
+    <tr><td>Jan 25, 2014 4:42 PM</td><td>testMethod</td><td>(Goodbye)</td><td>Message 2</td><td>Message 2</td><td>Pass</td></tr>
+    <tr><td>Jan 25, 2014 4:42 PM</td><td>testMethod</td><td>(1)</td><td>Message 1</td><td>Message 2</td><td>Fail</td></tr>
+    <tr><td>Jan 25, 2014 4:42 PM</td><td>testMethod</td><td>(Goodbye)</td><td>Message 2</td><td>Message 2</td><td>Pass</td></tr>
 </tbody>
 </table>
+<h2>Failed tests</h2>
+<table id="failed" class="tablesorter">
+<thead>
+<tr>
+    <th>Date</th>
+    <th>Method name</th>
+    <th>Input</th>
+    <th>Expected log</th>
+    <th>Received log</th>
+</tr>
+</thead>
+<tbody>
+    <tr><td>Jan 25, 2014 4:42 PM</td><td>testMethod</td><td>(1)</td><td>Message 1</td><td>fail</td></tr>
+    <tr><td>Jan 25, 2014 4:42 PM</td><td>testMethod</td><td>(1, Hello world, [1, 2, 3])</td><td>Message 1</td><td>fail</td></tr>
+    <tr><td>Jan 25, 2014 4:42 PM</td><td>testMethod</td><td>(1)</td><td>Message 1</td><td>Message 2</td></tr>
+</tbody>
+</table>
+</body>
 </html>
