@@ -2,6 +2,7 @@ package org.ohs1.winter2013;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -115,7 +116,12 @@ public enum BuiltInTester {
 			
 			System.out.println(output);
 			
-			File f = createFile();
+			try {
+				File f = createFile();
+				System.out.println(f.getAbsolutePath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			
 		}
 	}
@@ -157,15 +163,17 @@ public enum BuiltInTester {
 			return param1.equals(param2);
 	}
 	
-	private File createFile() {
+	private File createFile() throws IOException{
+		File f;
 		String path = programName + File.separator + outputFileName;
-		File f = new File(path);
+		DecimalFormat format = new DecimalFormat("000");
+		int fileNum = 0;
+		do {
+			f = new File(path.substring(0, path.length() - 5) + format.format(fileNum) + path.substring(path.length() - 5));
+			fileNum++;
+		} while (f.exists());
 		f.getParentFile().mkdirs();
-		try {
-			f.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		f.createNewFile();
 		return f;
 	}
 	
