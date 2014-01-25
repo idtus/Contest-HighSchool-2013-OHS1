@@ -21,8 +21,10 @@ public enum BuiltInTester {
 	// Whether testing is enabled (global control of testing)
 	private boolean enabled;
 	
+	// Used as the file directory for all output logs
 	private String programName;
 	
+	// Used as the template name for all output logs, will appear as outputFileName000.html where 000 are incremented with each new log file
 	private String outputFileName;
 
 	// The expectations currently being expected
@@ -103,8 +105,6 @@ public enum BuiltInTester {
 	/**
 	 * This will eventually be the method that outputs the HTML formatted log, but for now it
 	 * just prints out a normal, boring summary of the log entries
-	 * 
-	 * @param programName the name of the program (for log title)
 	 */
 	public void outputLog() {
 		if (enabled) {
@@ -163,6 +163,12 @@ public enum BuiltInTester {
 			return param1.equals(param2);
 	}
 	
+	/**
+	 * Creates the html file to store log data.
+	 * 
+	 * @return The created empty log file in File object format
+	 * @throws IOException
+	 */
 	private File createFile() throws IOException{
 		File f;
 		String path = programName + File.separator + outputFileName;
