@@ -60,8 +60,8 @@ public class Dummy {
 		testMethod(4, "No", new int[4]);
 		
 		//Enable testing
-		BuiltInTester bit = BuiltInTester.INSTANCE;
-		bit.enable("DummyProgram", "DummyLog.html");
+		BuiltInTester.enable("DummyProgram", "DummyLog.html");
+		BuiltInTester bit = BuiltInTester.getInstance();
 		
 		//Some tests:
 		//Shouldn't log anything
@@ -75,27 +75,26 @@ public class Dummy {
 		testMethod(1, "Goodbye", new int[3]);
 		
 		//Output log
-		bit.outputLog();
+		BuiltInTester.outputLog();
 	}
 	
 	//Method for testing stuff
 	private static void testMethod(int a, String b, int[] c) {
-		BuiltInTester bit = BuiltInTester.INSTANCE;
 		
-		bit.expecting("Message 1", a, 1);
-		bit.expecting("Message 1", a, 1, b, "Hello world", c, new int[]{1, 2, 3});
-		bit.expecting("Message 2", b, "Goodbye");
+		BuiltInTester.expecting("Message 1", a, 1);
+		BuiltInTester.expecting("Message 1", a, 1, b, "Hello world", c, new int[]{1, 2, 3});
+		BuiltInTester.expecting("Message 2", b, "Goodbye");
 		
 		//Print out expectations
 		System.out.println("Parameters: a = " + a + " b = " + b + " c = " + Arrays.toString(c));
-		System.out.println(bit.testingString());
+		System.out.println(BuiltInTester.testingString());
 		
 		//Bug: Hello world spelled incorrectly
 		if (a == 1 && b.equals("Hello worllld"))
-			bit.log("Message 1");
+			BuiltInTester.log("Message 1");
 		else if (b.equals("Goodbye"))
-			bit.log("Message 2");
+			BuiltInTester.log("Message 2");
 		
-		bit.log("fail");
+		BuiltInTester.log("fail");
 	}
 }
