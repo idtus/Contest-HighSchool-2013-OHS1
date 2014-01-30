@@ -25,6 +25,10 @@ class LogEntry {
 	private final String actualMessage;
 	private final Date logDate;
 	
+	/**
+	 * @param message
+	 * @param expectation
+	 */
 	public LogEntry(String message, Expectation expectation) {
 		this.actualMessage = message;
 		this.expectation = expectation;
@@ -69,23 +73,5 @@ class LogEntry {
 		trString += "</tr>";
 		
 		return trString;
-	}
-	
-	//Not really going to be used in the final product, but it looks like the example in the
-	//problem description so it's good for testing
-	public String toString() {
-		//If the test passed, output the sort of result from the problem description
-		if (didPass()) {
-			return dateFormat.format(logDate) +
-				   expectation.getMethodName() +
-				   " with input " + expectation.getParameterString() +
-				   " PASSED with \"" + actualMessage + "\"";
-		} else {
-			return dateFormat.format(logDate) +
-					   expectation.getMethodName() +
-					   " with input " + expectation.getParameterString() +
-					   " FAILED with \"" + actualMessage + "\"," +
-					   " expected message was \"" + expectation.getExpectedLog() + "\"";
-		}
 	}
 }

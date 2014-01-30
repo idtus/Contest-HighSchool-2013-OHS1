@@ -86,7 +86,6 @@ public class Dummy {
 		
 		//Print out expectations
 		System.out.println("Parameters: a = " + a + " b = " + b + " c = " + Arrays.toString(c));
-		System.out.println(BuiltInTester.testingString());
 		
 		//Bug: Hello world spelled incorrectly
 		if (a == 1 && b.equals("Hello worllld"))
