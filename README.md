@@ -1,7 +1,5 @@
-|***************************************************************************************|
-|  README README README README README README README README README README README README	|
-|***************************************************************************************|
-								  Built In Tester API									
+README
+Built In Tester API									
 	Authors:																			
 		Kostyantyn Proskuryakov, Ian Johnson              								
             																			
@@ -43,7 +41,4 @@
 		Christian Bach - tablesorter http://tablesorter.com/docs/						
 			License: http://opensource.org/licenses/mit-license.php						
 																						
-				  Use only for the IDT 2014 Winter HS competition.									
-|***************************************************************************************|
-|  README README README README README README README README README README README README	|
-|***************************************************************************************|
+				  Use only for the IDT 2014 Winter HS competition.					
